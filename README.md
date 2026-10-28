@@ -34,3 +34,10 @@ Lists are treated as opaque values, not diffed element-by-element. Two lists tha
 - When a key holds a dict on one side and a scalar (or list, or `None`) on the other, the dict side is flattened and each leaf is reported individually as removed or added, while the scalar side is reported at its key directly.
 - Only `dict` instances are traversed as mappings. Other mapping types (e.g. `OrderedDict`) are treated as opaque leaf values.
 - Dict keys are expected to be strings or have a useful `str()` representation, since nested keys are joined with `.`.
+
+## Performance
+
+The window keeps a bounded buffer, so `push` is constant time and memory does not
+grow with the length of the stream. `peak` and `trough` are linear in the window
+size, which is the trade that keeps `push` cheap.
+
